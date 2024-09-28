@@ -140,8 +140,6 @@ const CostComparisonCharts = () => {
 
   const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
-      const option = payload[0].name.split(' ')[0].toLowerCase();
-
       return (
         <div className="custom-tooltip bg-white p-4 border border-gray-300 rounded shadow-lg">
           <p className="label">{`${label}`}</p>
