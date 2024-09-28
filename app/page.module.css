@@ -1,0 +1,235 @@
+.root {
+  --dark-color: #1e1f22;
+  --light-color: #e0e0e0;
+  --shadow-inset: rgba(0, 72, 255, 0.2);
+  --opaque-bg-color: rgba(0, 72, 255, 1);
+  --shadow-exterior: rgba(0, 89, 255, 0.35);
+  --dot-color: rgba(255, 255, 255, 0.2);
+  --dot-light-color: rgba(0, 0, 0, 0.2);
+  --line-color: rgba(255, 255, 255, 0.04);
+  --line-light-color: rgba(0, 0, 0, 0.04);
+  --inner-circle-dark-mode: #F5DEB3;
+  --inner-circle-light-mode: black;
+  --circle-border-light: #a0a0a0;
+}
+
+.body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Poppins Medium", sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: crosshair;
+  --translateX: 0;
+  --translateY: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+.darkMode {
+  --background-color: var(--dark-color);
+  --text-color: var(--light-color);
+  --dot-color: rgba(255, 255, 255, 0.2);
+  --line-color: rgba(255, 255, 255, 0.1); /* Increased opacity for visibility */
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.lightMode {
+  --background-color: var(--light-color);
+  --text-color: var(--dark-color);
+  --dot-color: rgba(0, 0, 0, 0.2);
+  --line-color: var(--line-light-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.5;
+    z-index: 1;
+    pointer-events: none;
+    transform: translate(
+        calc(var(--mouse-x) * 20px),
+        calc(var(--mouse-y) * 20px)
+    );
+    transition: transform 0.2s ease-out, background 0.3s ease;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    border: 2px var(--opaque-bg-color) solid;
+}
+
+.header {
+    position: absolute;
+    top: 1rem;
+    left: 1.2rem;
+    display: flex;
+    margin: .4rem;
+}
+
+.circleSelector {
+    position: relative;
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: .4rem;
+    cursor: pointer;
+    transform: translate(
+        calc(var(--mouse-x) * -0.5px),
+        calc(var(--mouse-y) * -0.5px)
+    );
+    transition: background-color 0.3s ease, transform 0.2s ease-out;
+    border: 2px solid var(--text-color);
+}
+
+.circleSelector::before {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.darkMode .circleSelector:not(.colorSelect)::before {
+    background-color: var(--inner-circle-dark-mode);
+}
+
+.lightMode .circleSelector:not(.colorSelect)::before {
+    background-color: var(--inner-circle-light-mode);
+}
+
+.colorSelect::before {
+    background-color: var(--selected-color, var(--opaque-bg-color));
+}
+
+.heroText {
+    font-size: 4rem;
+    user-select: none;
+    padding: 0 0 .25rem 0;
+    text-shadow: rgba(0, 0, 0, 0.3) -.6rem .9rem .7rem;
+    transform: translate(
+        calc(var(--mouse-x) * -12px),
+        calc(var(--mouse-y) * -12px)
+    );
+    transition: transform 0.2s ease-out;
+}
+
+.button {
+    position: relative;
+    font-family: "Arial Black", "Arial Rounded MT Bold", "Arial", sans-serif;
+    font-size: 1.3rem;
+    border-radius: 2rem .2rem 2rem .2rem;
+    width: fit-content;
+    height: 5rem;
+    padding: 0 .7rem 0 .7rem;
+    background-color: transparent;
+    color: inherit;
+    border: .3rem solid currentColor;
+    transition: box-shadow .3s ease-in-out, transform 0.25s ease-out, font-size 0.25s ease-in-out, color 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+    overflow: hidden;
+    z-index: 1;
+    transform: translate(
+        calc(var(--mouse-x) * -10px),
+        calc(var(--mouse-y) * -10px)
+    );
+}
+
+.button:hover {
+    box-shadow: inset 0 -.5rem 1rem 0 var(--shadow-inset), -.7rem .5rem 1rem 0 var(--shadow-exterior);
+    transform: translateY(-.15rem);
+    cursor: pointer;
+    transition: box-shadow .3s ease-in-out, transform 0.25s ease-in-out, font-size 0.25s ease-in-out;
+}
+
+.button:active {
+    transform: translateZ(-1rem);
+    box-shadow: inset 0 -.5rem .6rem 0 var(--shadow-inset), -.55rem .4rem .6rem 0 var(--shadow-exterior);
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300%;
+    height: 300%;
+    background: repeating-linear-gradient(
+            -45deg,
+            var(--line-color) 0,
+            var(--line-color) 10px,
+            transparent 10px,
+            transparent 20px
+    );
+    animation: scrollLines 20s linear infinite;
+    transition: background 0.3s ease;
+}
+
+@keyframes scrollLines {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-33.33%, -33.33%);
+    }
+}
+
+.lowParallax {
+    transform: translate(
+        calc(var(--mouse-x) * -2px),
+        calc(var(--mouse-y) * -2px)
+    );
+    transition: transform 0.2s ease-out;
+}
+
+.mediumParallax {
+    transform: translate(
+        calc(var(--mouse-x) * -7px),
+        calc(var(--mouse-y) * -7px)
+    );
+    transition: transform 0.2s ease-out;
+}
+
+.highParallax {
+    transform: translate(
+        calc(var(--mouse-x) * -15px),
+        calc(var(--mouse-y) * -15px)
+    );
+    transition: transform 0.2s ease-out;
+}
+
+.subtleParallax {
+    transform: translate(
+        calc(var(--mouse-x) * -2px),
+        calc(var(--mouse-y) * -2px)
+    );
+    transition: transform 0.2s ease-out;
+}
+
+.standardParallax {
+    transform: translate(
+        calc(var(--mouse-x) * -10px),
+        calc(var(--mouse-y) * -10px)
+    );
+    transition: transform 0.2s ease-out;
+}
